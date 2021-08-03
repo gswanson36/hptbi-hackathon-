@@ -11,12 +11,15 @@
 #   prepended to it such that a call to predict can be used to generate
 #   predictions from the training and testing data sets.
 #
+
 mortality_model <- function(data) {
 
   ##############################################################################
   # User code starts here
   rtn <-
-    glm(mortality ~ age + female + gcs_use + icpyn1,
+    glm(mortality ~ age + gcsicu + admittoicudc1 + admittoint + admittoext + 
+    admittoicpstart1 + rxmann + entnutyn + cardiacarresticu + 
+    cardiacarrestother,
         data = data,
         family = binomial())
   
@@ -47,11 +50,14 @@ predict.hackathon_mortality_model <- function(object, newdata, ...) {
   ##############################################################################
   # User Defined data preparation code starts here
 
-  p <- stats::predict.glm(object, newdata, type = "response", ...)
+  p <- stats::predict.glm(object, newdata, type = "response")
   ifelse(p > 0.25, "Mortality", "Alive")
 
 }
 
-################################################################################
+
+
 #                                 End of File
 ################################################################################
+
+

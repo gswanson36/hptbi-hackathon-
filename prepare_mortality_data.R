@@ -12,6 +12,7 @@
 #   A data.frame with the defined primary outcome and any user specific
 #   elements needed for training and testing their model.
 #
+
 prepare_mortality_data <- function(training = TRUE) {
 
   # import the data set
@@ -34,9 +35,9 @@ prepare_mortality_data <- function(training = TRUE) {
   hackathon_mortality_data <-
     hackathon_mortality_data[-grep("fss", names(hackathon_mortality_data))]
 
+
   ##############################################################################
   # User Defined Code starts here
-
   hackathon_mortality_data$gcs_use <-
     ifelse(is.na(hackathon_mortality_data$gcsed),
            yes = hackathon_mortality_data$gcsicu,
@@ -59,13 +60,33 @@ prepare_mortality_data <- function(training = TRUE) {
     idx <- which(is.na(hackathon_mortality_data$icpyn1))
     hackathon_mortality_data$icpyn1[idx] <- flags[idx]
   }
-  
+    #Determine types of variables
+    typ <- rep(0, dim(hackathon_mortality_data)[2])
+
+for (i in 1:length(typ)) 
+  {
+  typ[i] <- typeof(hackathon_mortality_data[,i])
+}
+    
+ 
+#Find which variables are character, remove from data set
+char <- which(typ == "character")
+hackathon_mortality_data <- hackathon_mortality_data[, -char]
+
+#Turn NA's into 0
+hackathon_mortality_data[is.na(hackathon_mortality_data)] <- 0
+
+#remove study ID
+hackathon_mortality_data <- hackathon_mortality_data[, -1]
+
 
   # User Defined Code ends here
   ##############################################################################
 
   hackathon_mortality_data
 }
+
+
 
 ################################################################################
 #                                 End of File

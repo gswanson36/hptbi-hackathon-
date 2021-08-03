@@ -11,11 +11,20 @@
 #   prepended to it such that a call to predict can be used to generate
 #   predictions from the training and testing data sets.
 #
+
 fss_model <- function(data) {
 
   ##############################################################################
   # User code starts here
-  rtn <- lm(fss_total ~ age + female + icpyn1, data = data)
+  rtn <- lm(formula = fss_total ~ gcseyeed + gcsseded + ctskullfrac + 
+    ctintraventhem + gcsmotoricu + gcsicu + gcseyeobicu + 
+    admittoicuadmit2 + admittoext + 
+    admittoicpend1 + admittoicpstart3 + 
+    admittoicpend3 + admittotrach + newgastyn + 
+    admittogast + decomcranyn + admittolmbdrain + 
+    rxinotrvas +  
+    hosplos + cardiacarrestyn + cardiacarrestprehosp + cardiacarrested, 
+    data = data)
 
   # User code ends here
   ##############################################################################
@@ -45,7 +54,7 @@ predict.hackathon_fss_model <- function(object, newdata, ...) {
   ##############################################################################
   # user defined code starts here
 
-  as.integer(stats::predict.lm(object, newdata, type = "response", ...))
+  as.integer(stats::predict.lm(object, newdata, type = "response"))
 
 }
 
