@@ -17,14 +17,11 @@ fss_model <- function(data) {
   ##############################################################################
   # User code starts here
   rtn <- lm(formula = fss_total ~ gcseyeed + gcsseded + ctskullfrac + 
-    ctintraventhem + gcsmotoricu + gcsicu + gcseyeobicu + 
-    admittoicuadmit2 + admittoext + 
-    admittoicpend1 + admittoicpstart3 + 
-    admittoicpend3 + admittotrach + newgastyn + 
-    admittogast + decomcranyn + admittolmbdrain + 
-    rxinotrvas +  
-    hosplos + cardiacarrestyn + cardiacarrestprehosp + cardiacarrested, 
-    data = data)
+              ctintraventhem + gcsmotoricu + gcsicu + gcseyeobicu + admittoicuadmit2 + 
+              admittoext + admittoicpend1 + admittoicpstart3 + 
+              newgastyn + decomcranyn + admittolmbdrain + 
+              hosplos, 
+            data = data)
 
   # User code ends here
   ##############################################################################

@@ -5,10 +5,15 @@ author:
 - name: Peter E. DeWitt
   email: peter.dewitt@cuanschutz.edu
   github: dewittpe
-- name: Author Two
-  email: author.two@school.edu
-  github: author2
+- name: Glenn Swanson
+  email: glenn.swanson@colostate.edu
+  github: gswanson36
 description: >
-  This is where you can write a few sentences about your submission.  Modeling
-  approach, author contributions, etc.
+  The hospital mortality model was established with backward stepwise elimination from the full model (all numeric predictors). 
+  I performed cross validation on the training data with 25% holdout for the 'test' data.
+  The FSS model intentially left out the individual FSS scores, as I wanted to explore what variables contributed to the cumulative FSS score. 
+  I selected based on backward stepwise elimination from a model regressing fss_total on all numeric predictors, less the individual fss scores. 
+  From the resulting model, I selected variables that had statistically significant coefficients (correspongding p-value < 0.05) and fit the model with 24 variables plus the intercept.
+  In an effort to make a simpler model with fewer variables, I incrementally removed variables and used cross validation to verify test accuracy. 
+  I was able to narrow my model down to 15 variables while sacrificing only 3 percentage points in quality of fit to the data.
 url: https://github.com/dewittpe/hackathon
