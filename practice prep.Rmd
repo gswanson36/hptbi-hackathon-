@@ -1,0 +1,173 @@
+---
+title: "Mortality model"
+author: "Glenn Swanson"
+date: "7/16/2021"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+################################################################################
+# Prepare Mortality Data
+#
+# Define data processing steps to apply to the data set used to train and test
+# models for predicting mortality.
+#
+# Args:
+#   training  (logical) if the data set to read in is the training or testing
+#             data set.
+#
+# Return:
+#   A data.frame with the defined primary outcome and any user specific
+#   elements needed for training and testing their model.
+#
+```{r}
+prepare_mortality_data <- function(training = TRUE) {
+
+  # import the data set
+  if (!training & file.exists("./csvs/testing.csv")) {
+    hackathon_mortality_data <- read.csv(file = "./csvs/testing.csv")
+  } else {
+    hackathon_mortality_data <- read.csv(file = "./csvs/training.csv")
+  }
+
+  # Define the primary outcome -- do not edit this.  If you need the outcome in
+  # a different format, e.g., integer or logical, create an additional
+  # data.frame element in user defined code section below.
+  hackathon_mortality_data$mortality <-
+    as.integer(hackathon_mortality_data$hospdisposition == "Mortality")
+
+  # Omit some elements - FSS is omitted from this data set.  FSS could not be
+  # assessed for patients who died.  To reduce confusion FSS related elements
+  # are omitted as missing values for FSS are be highly correlated with
+  # mortality.
+  hackathon_mortality_data <-
+    hackathon_mortality_data[-grep("fss", names(hackathon_mortality_data))]
+
+  ##############################################################################
+  # User Defined Code starts here
+
+  hackathon_mortality_data$gcs_use <-
+    ifelse(is.na(hackathon_mortality_data$gcsed),
+           yes = hackathon_mortality_data$gcsicu,
+           no  = hackathon_mortality_data$gcsed)
+
+
+  # deal with a possible missing value in icpyn1
+  if (any(hackathon_mortality_data$icpyn1)) {
+
+    # if all information about type of monitor is missing then mark icpyn1 as 0
+    flags <-
+      as.integer(
+                 !(
+                     (hackathon_mortality_data$icptype1 == "" | is.na(hackathon_mortality_data$icptype1)) &
+                     (hackathon_mortality_data$icptype2 == "" | is.na(hackathon_mortality_data$icptype2)) &
+                     (hackathon_mortality_data$icptype3 == "" | is.na(hackathon_mortality_data$icptype3)) 
+                  )
+      )
+
+    idx <- which(is.na(hackathon_mortality_data$icpyn1))
+    hackathon_mortality_data$icpyn1[idx] <- flags[idx]
+  }
+  
+    # deal with a possible missing value in admittoicudc1, admittoicudc2, admittoicudc3
+  hackathon_mortality_data$admittoicudc1 <- 
+     ifelse(is.na(hackathon_mortality_data$admittoicudc1),
+           yes = 0,
+           no  = hackathon_mortality_data$admittoicudc1)
+  
+    hackathon_mortality_data$admittoicudc2 <- 
+     ifelse(is.na(hackathon_mortality_data$admittoicudc2),
+           yes = 0,
+           no  = hackathon_mortality_data$admittoicudc2)
+    
+    hackathon_mortality_data$admittoicudc3 <- 
+     ifelse(is.na(hackathon_mortality_data$admittoicudc3),
+           yes = 0,
+           no  = hackathon_mortality_data$admittoicudc3)
+
+    hackathon_mortality_data$admittoicuadmit2 <- 
+     ifelse(is.na(hackathon_mortality_data$admittoicuadmit2),
+           yes = 0,
+           no  = hackathon_mortality_data$admittoicuadmit2)
+    
+    hackathon_mortality_data$admittoicuadmit3 <- 
+     ifelse(is.na(hackathon_mortality_data$admittoicuadmit3),
+           yes = 0,
+           no  = hackathon_mortality_data$admittoicuadmit3)
+
+  # User Defined Code ends here
+  ##############################################################################
+
+  hackathon_mortality_data
+}
+
+```
+
+```{r}
+dat1 <- prepare_mortality_data(training = T)
+```
+
+```{r}
+str(dat1)
+```
+
+```{r}
+dat2 <- dat1
+dat2[is.na(dat2)] <- 0
+str(dat2)
+```
+
+
+```{r}
+#Empty vector, find classes of each variable
+clid <- rep(0, length(dat1[1, ]))
+
+for (i in 1:length(clid)) {
+  clid[i] <- class(dat1[,i])
+  
+}
+
+```
+
+
+
+
+```{r}
+#identify which variables are character, turn to factors
+
+cv <- which(clid == "character") #vector of character variables in the data frame
+
+is.na
+
+dat1$sourceinj <- as.factor(dat1$sourceinj)
+dat1$injurymech <- as.factor(dat1$injurymech)
+dat1$eddisposition <- as.factor(dat1$eddisposition)
+dat1$sourceicu <- as.factor(dat1$sourceicu)
+dat1$puplrcticu <- as.factor(dat1$puplrcticu)
+dat1$icptype1 <- as.factor(dat1$icptype1)
+dat1$icptype2 <- as.factor(dat1$icptype2)
+dat1$icptype3 <- as.factor(dat1$icptype3)
+dat1$cathtype1 <- as.factor(dat1$cathtype1)
+dat1$cathtype2 <- as.factor(dat1$cathtype2)
+dat1$cathtype3 <- as.factor(dat1$cathtype3)
+dat1$cathtype4 <- as.factor(dat1$cathtype4)
+dat1$hospdisposition <- as.factor(dat1$hospdisposition)
+
+```
+
+
+
+
+```{r}
+full <- glm(mortality ~ ., data = dat1, family = binomial())
+
+complete.cases(dat1)
+```
+
+
+################################################################################
+#                                 End of File
+################################################################################
