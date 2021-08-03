@@ -54,7 +54,7 @@ predict.hackathon_fss_model <- function(object, newdata, ...) {
   as.integer(stats::predict.lm(object, newdata, type = "response"))
 
 }
-
+ 
 ################################################################################
 #                                 End of File
 ################################################################################

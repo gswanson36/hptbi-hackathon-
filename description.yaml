@@ -1,5 +1,5 @@
 title: "Your Hackathon Project Title"
-version: v0.1
+version: v0.2
 language: R
 author:
 - name: Peter E. DeWitt
@@ -15,5 +15,5 @@ description: >
   I selected based on backward stepwise elimination from a model regressing fss_total on all numeric predictors, less the individual fss scores. 
   From the resulting model, I selected variables that had statistically significant coefficients (correspongding p-value < 0.05) and fit the model with 24 variables plus the intercept.
   In an effort to make a simpler model with fewer variables, I incrementally removed variables and used cross validation to verify test accuracy. 
-  I was able to narrow my model down to 15 variables while sacrificing only 3 percentage points in quality of fit to the data.
+  I was able to narrow my model down to 15 variables while sacrificing only 3 percentage points in quality of fit to the data. 
 url: https://github.com/dewittpe/hackathon
