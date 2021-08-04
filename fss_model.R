@@ -51,16 +51,11 @@ predict.hackathon_fss_model <- function(object, newdata, ...) {
   ##############################################################################
   # user defined code starts here
 
-  as.integer(stats::predict.lm(object, newdata, type = "response"))
+  rtn <- as.integer(stats::predict.lm(object, newdata, type = "response"))
   
-  ifelse(as.integer(stats::predict.lm(object, newdata, type = "response")) < 6,
-         yes = 6,
-         no = as.integer(stats::predict.lm(object, newdata, type = "response")))
-  
-  ifelse(as.integer(stats::predict.lm(object, newdata, type = "response")) > 30,
-         yes = 30,
-         no = as.integer(stats::predict.lm(object, newdata, type = "response")))
-
+  rtn[rtn <  6L] <- 6L
+  rtn[rtn > 30L] <- 30L
+  rtn
 }
  
 ################################################################################
