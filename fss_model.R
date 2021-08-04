@@ -2,7 +2,7 @@
 #
 ################################################################################
 # FSS Model
-#
+# v1.0
 # Args:
 #   data a data.frame resulting from a call to prepare_fss_data()
 #

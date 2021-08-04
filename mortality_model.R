@@ -2,7 +2,7 @@
 #
 ################################################################################
 # Mortality Model
-#
+# v1.0
 # Args:
 #   data a data.frame resulting from a call to prepare_mortality_data()
 #
