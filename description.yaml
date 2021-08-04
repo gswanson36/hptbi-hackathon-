@@ -1,5 +1,5 @@
 title: "Your Hackathon Project Title"
-version: v0.2
+version: v0.3
 language: R
 author:
 - name: Peter E. DeWitt
@@ -9,11 +9,15 @@ author:
   email: glenn.swanson@colostate.edu
   github: gswanson36
 description: >
-  The hospital mortality model was established with backward stepwise elimination from the full model (all numeric predictors). 
+  08/03/2021: The hospital mortality model was established with backward stepwise elimination from the full model (all numeric predictors). 
   I performed cross validation on the training data with 25% holdout for the 'test' data.
-  The FSS model intentially left out the individual FSS scores, as I wanted to explore what variables contributed to the cumulative FSS score. 
+  08/04/2021: After calculating the variance inflation factors for version 0.3's model, I decided to focus more on variables related to cardiac arrest (these were the only variables that did not greatly exceed 5).
+  I made cardiacarrestyn the primary variable, and continued to add variables from version 0.2's model while checking VIF and cross validating until I reached 96% test accuracy.
+  08/03/2021: The FSS model intentially left out the individual FSS scores, as I wanted to explore what variables contributed to the cumulative FSS score. 
   I selected based on backward stepwise elimination from a model regressing fss_total on all numeric predictors, less the individual fss scores. 
   From the resulting model, I selected variables that had statistically significant coefficients (correspongding p-value < 0.05) and fit the model with 24 variables plus the intercept.
   In an effort to make a simpler model with fewer variables, I incrementally removed variables and used cross validation to verify test accuracy. 
   I was able to narrow my model down to 15 variables while sacrificing only 3 percentage points in quality of fit to the data. 
+  08/04/2021: I calculated VIF for version 0.2's fss model and removed variables with a VIF greater than 5 (one variable, gcsicu).
+  I performed cross validation on the training data, and tested my model without gcsicu and it performed better in my 25% hold out data than version 0.2's model.
 url: https://github.com/dewittpe/hackathon

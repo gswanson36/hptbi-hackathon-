@@ -17,9 +17,7 @@ mortality_model <- function(data) {
   ##############################################################################
   # User code starts here
   rtn <-
-    glm(mortality ~ age + gcsicu + admittoicudc1 + admittoint + admittoext + 
-    admittoicpstart1 + rxmann + entnutyn + cardiacarresticu + 
-    cardiacarrestother,
+    glm(mortality ~ cardiacarrestyn + age + gcsicu + rxmann + entnutyn,
         data = data,
         family = binomial())
   
